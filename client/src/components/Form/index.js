@@ -9,7 +9,7 @@ export function Input(props) {
           value={props.value}
           name="search"
           type="text"
-          placeholder="Search For a Movie"
+          placeholder="Search for books"
           id="search" />
     </div>
   );

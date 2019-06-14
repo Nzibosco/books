@@ -23,7 +23,7 @@ class Books extends Component {
   };
   searchBook = query => {
     API.search(query)
-      .then(res => this.setState({ books: res.data.items}))
+      .then(res => this.setState({ books: res.data}))
       .catch(err => console.log(err));
   };
   handleInputChange = event => {
@@ -55,13 +55,16 @@ class Books extends Component {
               
               {/* <Input name="author" placeholder="Author (required)" />
               <TextArea name="synopsis" placeholder="Synopsis (Optional)" /> */}
+              {/* <a type = "button" href= {"/search/" + this.state.search }><FormBtn handleFormSubmit = {this.handleFormSubmit}>Search</FormBtn></a> */}
               <FormBtn handleFormSubmit = {this.handleFormSubmit}>Search</FormBtn>
+              {/* <a type = "button" href= {"/api/book/" + this.state.search } onClick= {this.handleFormSubmit}>Search</a> */}
             </form>
           </Col>
           </Row>
           <Row>
           <Col size="md-12">
-            {this.state.books.map(book => (
+            {
+              this.state.books.map(book => (
                   <ListItem key={book.volumeInfo.title}>
                     <a href="nolink">
                       <strong>
@@ -73,7 +76,9 @@ class Books extends Component {
                     <p><strong>Description: </strong>{book.volumeInfo.description}</p>
                     <SaveBtn>Save this book</SaveBtn>
                   </ListItem>
-                ))}
+                ))
+              
+                }
           </Col>
           {/* <Col size="md-6 sm-12">
             <Jumbotron>

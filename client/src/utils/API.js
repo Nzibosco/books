@@ -18,6 +18,9 @@ export default {
     return axios.post("/api/books", bookData);
   },
   search: function(query) {
-    return axios.get("https://www.googleapis.com/books/v1/volumes?q=" + query);
+    return axios.get("/search/" + query);
   }
+  // search: function(query) {
+  //   return axios.get("api/books/" + query);
+  // },
 };
