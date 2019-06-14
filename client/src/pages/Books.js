@@ -65,15 +65,15 @@ class Books extends Component {
           <Col size="md-12">
             {
               this.state.books.map(book => (
-                  <ListItem key={book.volumeInfo.title}>
+                  <ListItem key={book.title}>
                     <a href="nolink">
                       <strong>
-                        {book.volumeInfo.title}
+                        {book.title}
                       </strong>
                     </a>
-                    <p><strong>Authors: </strong>{book.volumeInfo.authors.map(author =>(<p><small>{author}</small></p>))}</p>
-                    <p><strong>Publisher: </strong>{book.volumeInfo.publisher}</p>
-                    <p><strong>Description: </strong>{book.volumeInfo.description}</p>
+                    <p><strong>Authors: </strong>{book.authors.map(author =>(<p><small>{author}</small></p>))}</p>
+                    <p><strong>Publisher: </strong>{book.publisher}</p>
+                    <p><strong>Description: </strong>{book.description}</p>
                     <SaveBtn>Save this book</SaveBtn>
                   </ListItem>
                 ))

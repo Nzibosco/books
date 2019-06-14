@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === "production") {
 }
 // Add routes, both API and view
 //app.use(routes);
-
+var db = require("./models");
 // using scrape examples to get books using axios starts here
 
 app.get("/search/:query", function(req, res) {
@@ -23,42 +23,41 @@ app.get("/search/:query", function(req, res) {
   axios.get("https://www.googleapis.com/books/v1/volumes?q=" + req.params.query).then(function(response) {
 
   // load response data in books var 
-  var book = response.data.items
-  res.json(book); 
-  console.log(book);
+  var books = response.data.items 
+  var data = [];
+  //console.log(books);
+for (var i = 0; i<books.length; i++){
+  var bookData = {
+    title:books[i].volumeInfo.title,
+    authors: books[i].volumeInfo.authors,
+    description: books[i].volumeInfo.description,
+    image: books[i].volumeInfo.imageLinks.thumbnail,
+    link: books[i].volumeInfo.previewLink
+  };
+  data.push(bookData)
+          // Insert the data in the scrapedData db
+          db.Book.create({
+            title:bookData.title,
+    authors: bookData.authors,
+    description:bookData.description,
+    image: bookData.image,
+    link: bookData.link,
+          },
+            function(err, inserted) {
+              if (err) {
+                // Log the error if one is encountered during the query
+                console.log(err);
+              }
+              else {
+                // Otherwise, log the inserted data
+                console.log(inserted);
+              }
+      });
 
-    // Load the html body from axios into cheerio
-    // var $ = cheerio.load(response.data);
-    // For each element with a "title" class
-    // $(".title").each(function(i, element) {
-    //   // Save the text and href of each link enclosed in the current element
-    //   var title = $(element).children("a").text();
-    //   var link = $(element).children("a").attr("href");
-
-    //   // If this found element had both a title and a link
-    //   if (title && link) {
-    //     // Insert the data in the scrapedData db
-    //     db.scrapedData.insert({
-    //       title: title,
-    //       link: link
-    //     },
-    //     function(err, inserted) {
-    //       if (err) {
-    //         // Log the error if one is encountered during the query
-    //         console.log(err);
-    //       }
-    //       else {
-    //         // Otherwise, log the inserted data
-    //         console.log(inserted);
-    //       }
-    //     });
-    //   }
-    // });
+}
+res.json(data);
+console.log(data);
   });
-
-  // Send a "Scrape Complete" message to the browser
-  // res.send("Scrape Complete");
-  
 });
 
 
