@@ -8,6 +8,7 @@ import { Input, TextArea, FormBtn, SaveBtn } from "../components/Form";
 
 class Books extends Component {
   state = {
+    btnText: "",
     search: "",
     books: []
   };
@@ -23,8 +24,20 @@ class Books extends Component {
   };
   searchBook = query => {
     API.search(query)
-      .then(res => this.setState({ books: res.data}))
+      .then(res => this.setState({ books: res.data.map(data => ({...data, saved: false})) }))
       .catch(err => console.log(err));
+  };
+  saveBook = (bookData) =>{
+    API.saveBook(bookData)
+    .then(res => 
+      //console.log(res);
+      // find book in state and change saved to !saved
+      {
+        console.log(res);
+      }
+
+    )
+    .catch(err => console.log(err));
   };
   handleInputChange = event => {
     const value = event.target.value;
@@ -64,7 +77,7 @@ class Books extends Component {
           <Row>
           <Col size="md-12">
             {
-              this.state.books.map(book => (
+              this.state.books.map((book, index) => (
                   <ListItem key={book.title}>
                     <a href="nolink">
                       <strong>
@@ -74,7 +87,7 @@ class Books extends Component {
                     <p><strong>Authors: </strong>{book.authors.map(author =>(<p><small>{author}</small></p>))}</p>
                     <p><strong>Publisher: </strong>{book.publisher}</p>
                     <p><strong>Description: </strong>{book.description}</p>
-                    <SaveBtn>Save this book</SaveBtn>
+                    <button type = "button" name = "saveBtn" value = {index} key = {index} id = {index} onClick = {() => { this.saveBook(this.state.books[index]);}}>{book.saved ? "Saved" : "Save this book"}</button>
                   </ListItem>
                 ))
               

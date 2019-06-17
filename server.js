@@ -36,23 +36,23 @@ for (var i = 0; i<books.length; i++){
   };
   data.push(bookData)
           // Insert the data in the scrapedData db
-          db.Book.create({
-            title:bookData.title,
-    authors: bookData.authors,
-    description:bookData.description,
-    image: bookData.image,
-    link: bookData.link,
-          },
-            function(err, inserted) {
-              if (err) {
-                // Log the error if one is encountered during the query
-                console.log(err);
-              }
-              else {
-                // Otherwise, log the inserted data
-                console.log(inserted);
-              }
-      });
+    //       db.Book.create({
+    //         title:bookData.title,
+    // authors: bookData.authors,
+    // description:bookData.description,
+    // image: bookData.image,
+    // link: bookData.link,
+    //       },
+    //         function(err, inserted) {
+    //           if (err) {
+    //             // Log the error if one is encountered during the query
+    //             console.log(err);
+    //           }
+    //           else {
+    //             // Otherwise, log the inserted data
+    //             console.log(inserted);
+    //           }
+    //   });
 
 }
 res.json(data);
@@ -60,6 +60,14 @@ console.log(data);
   });
 });
 
+// route for saving books 
+
+app.post("/api/books", function(req, res) {
+  db.Book
+    .create(req.body)
+    .then(data => res.json(data))
+    .catch(err => res.status(422).json(err));
+},)
 
 // Connect to the Mongo DB
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/reactreadinglist");
